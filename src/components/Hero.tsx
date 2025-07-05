@@ -58,10 +58,16 @@ const AdvancedTypewriter = () => {
   return (
     <div className="text-center w-full">
       {/* Versi 1: Ukuran maksimal dengan viewport units */}
-      <span className="text-[20vw] md:text-[15vw] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-blue to-primary-purple leading-none">
+      <span
+        className="
+        text-[4rem] md:text-[15vw] font-extrabold leading-none
+        text-primary-blue  /* Default (mobile) */
+        md:text-transparent md:bg-clip-text md:bg-gradient-to-r md:from-primary-blue md:to-primary-purple /* Desktop */
+      "
+      >
         {displayedText}
       </span>
-      <span className="text-[20vw] md:text-[15vw] animate-pulse text-white leading-none">
+      <span className="text-[4rem] md:text-[15vw] animate-pulse text-white leading-none">
         |
       </span>
 

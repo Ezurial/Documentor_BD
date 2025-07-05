@@ -15,17 +15,6 @@ type Message = {
   content: string;
 };
 
-type OpenRouterResponse = {
-  choices?: {
-    message?: {
-      content: string;
-    };
-  }[];
-  error?: {
-    message: string;
-  };
-};
-
 export const AiSidebar: React.FC<AiSidebarProps> = ({ open, onClose }) => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -36,6 +25,7 @@ export const AiSidebar: React.FC<AiSidebarProps> = ({ open, onClose }) => {
     return !bannedWords.some((word) => text.toLowerCase().includes(word));
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const filterResponse = (text: string): string => {
     const offTopicPhrases = ["sebagai AI", "model bahasa", "saya tidak bisa"];
     if (offTopicPhrases.some((phrase) => text.includes(phrase))) {
@@ -63,54 +53,29 @@ export const AiSidebar: React.FC<AiSidebarProps> = ({ open, onClose }) => {
     setLoading(true);
 
     try {
-      const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      const res = await fetch("/api/ai-assistant", {
         method: "POST",
         headers: {
-          Authorization:
-            "Bearer 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",
-          "HTTP-Referer": "http://localhost:3000",
-          "X-Title": "Documentor",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "deepseek/deepseek-r1:free",
-          messages: [
-            {
-              role: "system",
-              content: `Anda adalah AI Assistant untuk membantu menulis dokumen ilmiah. 
-- Fokus pada makalah, skripsi, laporan, artikel ilmiah.
-- Jika pertanyaan di luar topik, tolong tolak dengan sopan.
-- Gunakan bahasa Indonesia yang formal.`,
-            },
-            ...updatedMessages,
-          ],
-          temperature: 0.4,
-          max_tokens: 1000,
+          messages: updatedMessages,
         }),
       });
-
-      const data: OpenRouterResponse = await res.json();
-
-      let reply = "❌ Tidak ada respon.";
-      if (data.choices?.[0]?.message?.content) {
-        reply = data.choices[0].message.content;
-      } else if (data.error?.message) {
-        reply = `❌ Error: ${data.error.message}`;
-      }
-
-      const sanitized = DOMPurify.sanitize(marked.parse(filterResponse(reply)));
+      const data = await res.json();
+      const sanitized = DOMPurify.sanitize(marked.parse(data.message));
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: sanitized },
       ]);
-    } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "Terjadi kesalahan yang tidak diketahui";
+    } catch (err) {
+      let errorMessage = "❌ Terjadi kesalahan";
+      if (err instanceof Error) {
+        errorMessage += ": " + err.message;
+      }
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: `❌ Terjadi kesalahan: ${errorMessage}` },
+        { role: "assistant", content: errorMessage },
       ]);
     } finally {
       setLoading(false);
