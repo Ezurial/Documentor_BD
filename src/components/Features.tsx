@@ -122,9 +122,9 @@ const Features = () => (
         <BentoCard
           src="videos/fonts.mp4"
           title={
-            <span className="bg-gradient-to-r from-primary-green to-blue-500 bg-clip-text text-transparent">
+            <>
               tool <b>k</b>it
-            </span>
+            </>
           }
           description=""
           isComingSoon
@@ -136,8 +136,9 @@ const Features = () => (
           <BentoCard
             src="videos/chat_Bot.mp4"
             title={
-              <span className="bg-gradient-to-r from-primary-green to-blue-500 bg-clip-text text-transparent">
-                chat b<b>o</b>t
+              <span className="!text-black">
+                {" "}
+                {/* Force black color */}chat b<b>o</b>t
               </span>
             }
             description=""
@@ -152,7 +153,7 @@ const Features = () => (
               <BentoCard
                 src="videos/kolaborasi.mp4"
                 title={
-                  <span className="bg-gradient-to-r from-primary-green to-blue-500 bg-clip-text text-transparent">
+                  <span className="!text-black">
                     {" "}
                     {/* Force black color */}coll<b>a</b>b
                   </span>
@@ -173,7 +174,7 @@ const Features = () => (
           <BentoCard
             src="videos/diskusi.mp4"
             title={
-              <span className="bg-gradient-to-r from-primary-green to-blue-500 bg-clip-text text-transparent">
+              <span className="!text-black">
                 {" "}
                 {/* Force black color */}discu<b>s</b>si<b>o</b>n
               </span>
@@ -196,7 +197,7 @@ const Features = () => (
           <BentoCard
             src="videos/tagging.mp4"
             title={
-              <span className="bg-gradient-to-r from-primary-green to-blue-500 bg-clip-text text-transparent">
+              <span className="!text-black">
                 {" "}
                 {/* Force black color */}tag<b>g</b>i<b>n</b>g
               </span>
