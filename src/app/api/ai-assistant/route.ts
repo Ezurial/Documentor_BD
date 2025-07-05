@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const runtime = "edge"; // Optional: for Edge Runtime
+export const runtime = "nodejs"; // Optional: for Edge Runtime
 
 export async function POST(req: Request) {
   try {
